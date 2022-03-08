@@ -15,6 +15,6 @@ public class Wind : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        DrawArrow.ForGizmo(this.transform.position, this.transform.forward * WindPower, Color.green);
+        DrawArrow.ForGizmo(this.transform.position, this.transform.forward * WindPower, Color.magenta);
     }
 }
