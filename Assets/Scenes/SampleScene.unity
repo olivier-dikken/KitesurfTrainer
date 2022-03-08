@@ -229,6 +229,22 @@ PrefabInstance:
       value: Kite
       objectReference: {fileID: 0}
     - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
+      propertyPath: wind.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
+      propertyPath: wind.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
+      propertyPath: wind.z
+      value: -1.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
+      propertyPath: myKiteEq
+      value: 
+      objectReference: {fileID: 1165184297}
+    - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
       propertyPath: airDensity
       value: 1
       objectReference: {fileID: 0}
@@ -241,8 +257,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
+      propertyPath: surfaceArea
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
       propertyPath: lineOrigin.x
       value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
+      propertyPath: windVelocity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4491962383446825269, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
       propertyPath: kite_center.x
@@ -398,3 +422,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1165184294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 420052934995731700, guid: 7d24d66a48fe8d9c68811b9cd8355a00, type: 3}
+  m_PrefabInstance: {fileID: 727629587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1165184297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165184294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5bdf3d9127d1e9449d59df9c5d98e59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lift: 0

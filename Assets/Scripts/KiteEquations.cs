@@ -15,6 +15,9 @@ public class KiteEquations : MonoBehaviour
     
     float air_density;
 
+    public float lift;
+    
+
     
     public KiteEquations(Kite sessionKite)
     {
@@ -30,19 +33,28 @@ public class KiteEquations : MonoBehaviour
         wind_velocity = myKite.wind.magnitude;
     }
 
-    void FixedUpdate()
+
+    public void CustomUpdate()
     {
         kite_direction = myKite.transform.forward;
+
+        getLift();
+        Debug.Log("lift: " + lift);
     }
 
-    float getLift()
+    public void getLift()
     {
         float kite_AOA = getKiteAOA(wind_direction, kite_direction);
         float clo = getCLO(kite_AOA);
         float kite_ratio = getKiteAR(kite_span, kite_area);
         float lift_coef = getLiftCoef(clo, kite_ratio);
-        float lift = lift_coef * kite_area * air_density * Mathf.Pow(wind_velocity, 2) * 0.5f;
-        return lift;
+        float computed_lift = lift_coef * kite_area * air_density * Mathf.Pow(wind_velocity, 2) * 0.5f;
+        //Debug.Log("logging");
+        //Debug.Log(kite_AOA);
+        //Debug.Log(clo);
+        //Debug.Log(kite_ratio);
+        //Debug.Log(lift_coef);
+        lift = computed_lift;
     }
 
     private float getLiftCoef(float clo, float kite_ratio)
