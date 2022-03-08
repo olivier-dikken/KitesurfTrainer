@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b554aff58a2b647a532646a1cdd5cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WindPower: 3
+  WindPower: 2.86
 --- !u!4 &1434952546
 Transform:
   m_ObjectHideFlags: 0
@@ -437,7 +437,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434952544}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 2, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -455,6 +455,7 @@ GameObject:
   - component: {fileID: 1580641602}
   - component: {fileID: 1580641601}
   - component: {fileID: 1580641600}
+  - component: {fileID: 1580641603}
   m_Layer: 0
   m_Name: Kite
   m_TagString: Untagged
@@ -475,6 +476,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theWind: {fileID: 1434952545}
+  outerWindBaseBias: 1
+  downWindBaseBias: 1
+  coandaEffectLiftAngle: 10
+  coandaCoef: 1
+  dwCoef: 1
+  liftCoef: 1
 --- !u!114 &1580641601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,7 +501,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580641599}
-  m_LocalRotation: {x: -0.16392866, y: 0, z: 0, w: 0.98647225}
+  m_LocalRotation: {x: -0.023559738, y: 0, z: 0, w: 0.9997224}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -503,7 +510,19 @@ Transform:
   - {fileID: 854090362}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -18.87, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -2.7, y: 0, z: 0}
+--- !u!114 &1580641603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580641599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b2fe93f634a744685bc8c017943e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1710025334
 GameObject:
   m_ObjectHideFlags: 0

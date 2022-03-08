@@ -7,19 +7,23 @@ public class KiteEffects : MonoBehaviour
     //needed variables
     public Wind theWind;
     public float outerWindBaseBias; //wind created from leading edge round shape; basically if AOA is 90 degrees then the round shape of the leading edge still pushes the kite a bit in the fwd direction
+    public float downWindBaseBias; //down wind effect at angle 0
     public float coandaEffectLiftAngle;
+    public float coandaCoef = 1;
+    public float dwCoef = 1;
+    public float liftCoef = 1;
 
 
-    Vector3 CoandaEffect(float coandaCoef, Vector3 apparentWind, float AOA, Transform kiteTranform)
+    Vector3 CoandaEffect(Vector3 apparentWind, float AOA, Transform kiteTranform)
     {
         Debug.Log("Coanda Effect debug. AOA : " + AOA.ToString());
 
         
 
         float outerWind = (apparentWind.magnitude * (90-AOA) / 90); 
-        //float outerWindLeadingEdgeBias = outerWindBaseBias;
-        //float totalOuterWind = outerWindLeadingEdgeBias + outerWind;
-        float totalOuterWind = outerWind;
+        float outerWindLeadingEdgeBias = outerWindBaseBias * (AOA/90);
+        float totalOuterWind = outerWindLeadingEdgeBias + outerWind;
+        //float totalOuterWind = outerWind;
         Debug.Log("outerWind : " + outerWind.ToString());
 
         Vector3 coandaEffect = Quaternion.AngleAxis(-coandaEffectLiftAngle, Vector3.right) * kiteTranform.forward * coandaCoef * totalOuterWind;
@@ -29,7 +33,8 @@ public class KiteEffects : MonoBehaviour
     Vector3 DownWindEffect(Vector3 apparentWind, float AOA)
     {
         float angleMultiplier = AOA / 90;
-        return -Vector3.forward;
+        float downWindBias = downWindBaseBias * (1 - angleMultiplier);
+        return apparentWind * angleMultiplier * dwCoef + apparentWind.normalized * downWindBaseBias;
     }
 
     Vector3 getApparentWind(Vector3 windVector, Vector3 kiteVector)
@@ -51,17 +56,27 @@ public class KiteEffects : MonoBehaviour
         return AOA;
     }
 
+    Vector3 getLift(Vector3 apparentWind, float AOA)
+    {
+        //using intuition to make formulas
+        float angleMult = 1-(Mathf.Abs(AOA-45) / 45);
+        return angleMult * apparentWind.magnitude * this.transform.up * liftCoef;
+    }
+
     private void OnDrawGizmos()
     {
         Vector3 apparentWind = getApparentWind(theWind.getWindVector(), Vector3.zero);
         float AOA = getAOA(apparentWind, this.transform);
-        Vector3 CE = CoandaEffect(1, apparentWind, AOA, this.transform);
+        Vector3 CE = CoandaEffect(apparentWind, AOA, this.transform);
         DrawArrow.ForGizmo(this.transform.position, CE, Color.red);
 
         Vector3 DWE = DownWindEffect(apparentWind, AOA);
-        DrawArrow.ForGizmo(this.transform.position, DWE, Color.red);
+        DrawArrow.ForGizmo(this.transform.position, DWE, Color.blue);
+
+        Vector3 lift = getLift(apparentWind, AOA);
+        DrawArrow.ForGizmo(this.transform.position, lift, Color.yellow);
 
 
-        DrawArrow.ForGizmo(this.transform.position, DWE + CE, Color.green);
+        DrawArrow.ForGizmo(this.transform.position, DWE + CE + lift, Color.magenta);
     }
 }
