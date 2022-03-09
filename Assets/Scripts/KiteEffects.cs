@@ -14,12 +14,19 @@ public class KiteEffects : MonoBehaviour
     public float liftCoef = 1;
 
 
+    //shared values / force computation results
+    Vector3 apparentWind = Vector3.zero;
+    float AOA = 0f;
+    Vector3 CE = Vector3.zero;    
+    Vector3 DWE = Vector3.zero;    
+    Vector3 lift = Vector3.zero;
+    Vector3 totalForce = Vector3.zero;
+
+
     Vector3 CoandaEffect(Vector3 apparentWind, float AOA, Transform kiteTranform)
     {
         Debug.Log("Coanda Effect debug. AOA : " + AOA.ToString());
-
         
-
         float outerWind = (apparentWind.magnitude * (90-AOA) / 90); 
         float outerWindLeadingEdgeBias = outerWindBaseBias * (AOA/90);
         float totalOuterWind = outerWindLeadingEdgeBias + outerWind;
@@ -64,19 +71,25 @@ public class KiteEffects : MonoBehaviour
     }
 
     private void OnDrawGizmos()
+    {                
+        DrawArrow.ForGizmo(this.transform.position, CE, Color.red);
+        DrawArrow.ForGizmo(this.transform.position, DWE, Color.blue);
+        DrawArrow.ForGizmo(this.transform.position, lift, Color.yellow);
+        DrawArrow.ForGizmo(this.transform.position, totalForce, Color.magenta);
+    }
+
+    private void Update()
     {
         Vector3 apparentWind = getApparentWind(theWind.getWindVector(), Vector3.zero);
         float AOA = getAOA(apparentWind, this.transform);
         Vector3 CE = CoandaEffect(apparentWind, AOA, this.transform);
-        DrawArrow.ForGizmo(this.transform.position, CE, Color.red);
-
         Vector3 DWE = DownWindEffect(apparentWind, AOA);
-        DrawArrow.ForGizmo(this.transform.position, DWE, Color.blue);
-
         Vector3 lift = getLift(apparentWind, AOA);
-        DrawArrow.ForGizmo(this.transform.position, lift, Color.yellow);
 
+        Vector3 totalForce = DWE + CE + lift; //sum of forces
 
-        DrawArrow.ForGizmo(this.transform.position, DWE + CE + lift, Color.magenta);
+        gameObject.GetComponent<Rigidbody>().AddForce(totalForce);
+
+       
     }
 }
