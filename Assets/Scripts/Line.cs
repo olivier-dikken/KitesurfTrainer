@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +6,8 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     
-    [SerializeField] private float lineLength;
-    [SerializeField] private float tensionScale;
+    public float lineLength;
+    public float tensionScale;
     
     private Vector3 _tensionForce;
     public Vector3 lineOrigin;
@@ -34,14 +35,20 @@ public class Line : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        // vector from line origin to line end
         Vector3 lineDirection = transform.position - lineOrigin;
+        
+        // get the amount of wind strength in direction of the line
         Vector3 windProjection = Vector3.Project(kite.totalWindForce, lineDirection);
         
         float currentLineLen = Vector3.Distance(lineOrigin, transform.position);
-        float lineLenDifference = (float) (currentLineLen - lineLength);
-        _tensionForce = -lineLenDifference * windProjection;
-        if (lineLenDifference < 0) _tensionForce = Vector3.zero;
-        _tensionForce *= tensionScale;
+        float lineLenDifference = currentLineLen - lineLength;
+    
+        // force(len_diff) = scale * len_diff - desired_force
+        float tensionMagnitude = tensionScale * Mathf.Pow(lineLenDifference, 2) - windProjection.magnitude;
+        tensionMagnitude = tensionMagnitude < 0 ? 0 : tensionMagnitude;
+        
+        _tensionForce = -windProjection.normalized * tensionMagnitude;
         
     }
 }

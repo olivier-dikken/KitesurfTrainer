@@ -48,7 +48,7 @@ public class Kite : MonoBehaviour
 
         // get vector forms of drag and lift
         _dragForce = wind.normalized * _dragMagnitude;
-        _liftForce = Vector3.up * _liftMagnitude;
+        _liftForce = transform.up * _liftMagnitude;
 
         float liftRelAngle = Mathf.Deg2Rad * Vector3.Angle(transform.up, Vector3.up);
         float dragRelAngle = Mathf.Deg2Rad * Vector3.Angle(transform.up, wind.normalized);
@@ -65,18 +65,18 @@ public class Kite : MonoBehaviour
     {
         
         // wind
-        DrawArrow.ForGizmo(transform.position, wind, Color.blue);
+        DrawArrow.ForGizmo(transform.position, wind, Color.blue, 2.0f);
         
         // direction
-        DrawArrow.ForGizmo(transform.position, transform.up, Color.red);
+        // DrawArrow.ForGizmo(transform.position, transform.up, Color.red);
         
         // draw forces
         DrawArrow.ForGizmo(transform.position, totalWindForce, Color.cyan);
-        DrawArrow.ForGizmo(transform.position, _dragForce, Color.magenta);
+        // DrawArrow.ForGizmo(transform.position, _dragForce, Color.magenta);
        
-        // draw torques
-        DrawArrow.ForGizmo(transform.position, _liftTorque, Color.cyan);
-        DrawArrow.ForGizmo(transform.position, _dragTorque, Color.green);
+        // draw torque-axis
+        // DrawArrow.ForGizmo(transform.position, _liftTorque, Color.cyan);
+        // DrawArrow.ForGizmo(transform.position, _dragTorque, Color.green);
 
     }
 
