@@ -9,7 +9,7 @@ public class Controller : MonoBehaviour
 
     public GameObject leftPoint;
     public GameObject rightPoint;
-
+    
     void FixedUpdate()
     {
         // place handles at bar 
@@ -21,10 +21,8 @@ public class Controller : MonoBehaviour
 
         float rot = Input.GetAxis("Horizontal");
         transform.RotateAround(transform.position, Vector3.Cross(leftLineDir, rightLineDir), rot);
-
-        float tension = Input.GetAxis("Vertical");
-        Debug.Log(tension);
-        // kite.leftLine.tensionScale += tension;
-        // kite.rightLine.tensionScale += tension;
+    
+        float power = Input.GetAxis("Vertical");
+        kite.SetPower(power);
     }
 }

@@ -6,7 +6,8 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     
-    public float lineLength;
+    public float desiredLineLength;
+    public float actualLineLength;
     public float tensionScale;
     
     private Vector3 _tensionForce;
@@ -41,10 +42,10 @@ public class Line : MonoBehaviour
         // get the amount of wind strength in direction of the line
         Vector3 windProjection = Vector3.Project(kite.totalWindForce, lineDirection);
         
-        float currentLineLen = Vector3.Distance(lineOrigin, transform.position);
-        float lineLenDifference = currentLineLen - lineLength;
+        actualLineLength = Vector3.Distance(lineOrigin, transform.position);
+        float lineLenDifference = actualLineLength - desiredLineLength;
     
-        // force(len_diff) = scale * len_diff - desired_force
+        // force(len_diff) = scale * len_diff^2 - desired_force
         float tensionMagnitude = tensionScale * Mathf.Pow(lineLenDifference, 2) - windProjection.magnitude;
         tensionMagnitude = tensionMagnitude < 0 ? 0 : tensionMagnitude;
         

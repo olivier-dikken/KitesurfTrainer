@@ -250,13 +250,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dabda4b3453b20d0a577ca2350abdff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wind: {x: 10, y: 0, z: 10}
+  wind: {x: 0, y: 0, z: 5}
   leftLine: {fileID: 1052181343}
   rightLine: {fileID: 1611068731}
   dragScale: 1
   liftScale: 1
-  dragTorqueScale: 5
-  liftTorqueScale: 10
+  dragTorqueScale: 0
+  liftTorqueScale: 0
   totalWindForce: {x: 0, y: 0, z: 0}
 --- !u!65 &755953107
 BoxCollider:
@@ -328,8 +328,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755953105}
-  m_LocalRotation: {x: 0.53681016, y: -0.00021455118, z: 0.00035253304, w: 0.843703}
-  m_LocalPosition: {x: 19.3, y: 57.4, z: 36.8}
+  m_LocalRotation: {x: 0.7183923, y: -0.0006211115, z: 0.0014407965, w: 0.69563645}
+  m_LocalPosition: {x: 1, y: 27, z: 26.1}
   m_LocalScale: {x: 20, y: 0.1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -337,7 +337,7 @@ Transform:
   - {fileID: 1611068732}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 64.934, y: 0.002, z: 0.049}
+  m_LocalEulerAnglesHint: {x: 91.845, y: -2.145996, z: -1.9790039}
 --- !u!54 &755953111
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -348,7 +348,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 5
   m_Drag: 1
-  m_AngularDrag: 1
+  m_AngularDrag: 5
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -467,7 +467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c2c2f15c8e0f7981ac3b6bfcab92789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineLength: 30
+  desiredLineLength: 60
+  actualLineLength: 0
   tensionScale: 1
   lineOrigin: {x: 5, y: 0, z: 0}
   kite: {fileID: 755953106}
@@ -643,7 +644,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c2c2f15c8e0f7981ac3b6bfcab92789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineLength: 30
+  desiredLineLength: 60
+  actualLineLength: 0
   tensionScale: 1
   lineOrigin: {x: -5, y: 0, z: 0}
   kite: {fileID: 755953106}
@@ -799,8 +801,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033290918}
   m_LocalRotation: {x: 0.32551932, y: -0, z: -0, w: 0.9455354}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 12.943084, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 5.0000014, z: -2.2999997}
+  m_LocalScale: {x: 7.5727396, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1918635335}

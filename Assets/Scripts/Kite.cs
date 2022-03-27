@@ -5,15 +5,16 @@ public class Kite : MonoBehaviour
 {
 
     public Vector3 wind;
+    private float powerScale;
 
     public Line leftLine;
     public Line rightLine;
     
     // parameters
-    [SerializeField] private float dragScale = 1;
-    [SerializeField] private float liftScale = 1;
-    [SerializeField] private float dragTorqueScale = 1;
-    [SerializeField] private float liftTorqueScale = 1;
+    public float dragScale = 1;
+    public float liftScale = 1;
+    public float dragTorqueScale = 1;
+    public float liftTorqueScale = 1;
 
     // recomputed at each iteration
     public Vector3 totalWindForce;
@@ -27,6 +28,11 @@ public class Kite : MonoBehaviour
     
     // components
     private Rigidbody _rb;
+    
+    public void SetPower(float input)
+    {
+        powerScale = input + 1;
+    }
 
     private void Start()
     {
@@ -59,6 +65,12 @@ public class Kite : MonoBehaviour
             
         // total wind force, sum of lift and drag
         totalWindForce = _dragForce + _liftForce;
+        
+        Debug.Log(powerScale);
+
+        totalWindForce *= powerScale;
+        _dragTorque *= powerScale;
+        // _liftTorque *= powerScale;
     }
 
     private void OnDrawGizmos()
