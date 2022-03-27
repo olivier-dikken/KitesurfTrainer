@@ -5,6 +5,8 @@ using UnityEngine;
 public class KiteEffects : MonoBehaviour
 {
     //needed variables
+    public Transform harnessTransform;
+    public float lineLength = 25;
     public Wind theWind;
     public float outerWindBaseBias; //wind created from leading edge round shape; basically if AOA is 90 degrees then the round shape of the leading edge still pushes the kite a bit in the fwd direction
     public float downWindBaseBias; //down wind effect at angle 0
@@ -12,6 +14,7 @@ public class KiteEffects : MonoBehaviour
     public float coandaCoef = 1;
     public float dwCoef = 1;
     public float liftCoef = 1;
+    public float kiteEffectCoef = 1;
 
 
     //shared values / force computation results
@@ -33,7 +36,7 @@ public class KiteEffects : MonoBehaviour
         //float totalOuterWind = outerWind;
         Debug.Log("outerWind : " + outerWind.ToString());
 
-        Vector3 coandaEffect = Quaternion.AngleAxis(-coandaEffectLiftAngle, Vector3.right) * kiteTranform.forward * coandaCoef * totalOuterWind;
+        Vector3 coandaEffect = Quaternion.AngleAxis(-coandaEffectLiftAngle, Vector3.right) * kiteTranform.forward * coandaCoef * Mathf.Pow(totalOuterWind,1);
         return coandaEffect;
     }
 
@@ -71,25 +74,67 @@ public class KiteEffects : MonoBehaviour
     }
 
     private void OnDrawGizmos()
-    {                
+    {             
+        if(!Application.isPlaying)
+        {
+            CalculateKiteForces(); //to draw gizmos
+        }
         DrawArrow.ForGizmo(this.transform.position, CE, Color.red);
         DrawArrow.ForGizmo(this.transform.position, DWE, Color.blue);
         DrawArrow.ForGizmo(this.transform.position, lift, Color.yellow);
         DrawArrow.ForGizmo(this.transform.position, totalForce, Color.magenta);
     }
 
+    private void CalculateKiteForces()
+    {
+        apparentWind = getApparentWind(theWind.getWindVector(), Vector3.zero);
+        AOA = getAOA(apparentWind, this.transform);
+        CE = CoandaEffect(apparentWind, AOA, this.transform);
+        DWE = DownWindEffect(apparentWind, AOA);
+        lift = getLift(apparentWind, AOA);
+
+        Vector3 tempForce = DWE + CE + lift;
+        tempForce = tempForce * 0.5f;
+
+        if(Vector3.Dot(tempForce, apparentWind) < 0)
+        {
+            //remove wind in direction of totalForce
+            Vector3 windToRemove = Vector3.Project(tempForce, apparentWind);
+
+            Debug.Log("windToRemove magnitude: " + windToRemove.magnitude);
+            totalForce = tempForce + windToRemove;
+        } else
+        {            
+            totalForce = tempForce;
+        }        
+    }
+
     private void Update()
     {
-        Vector3 apparentWind = getApparentWind(theWind.getWindVector(), Vector3.zero);
-        float AOA = getAOA(apparentWind, this.transform);
-        Vector3 CE = CoandaEffect(apparentWind, AOA, this.transform);
-        Vector3 DWE = DownWindEffect(apparentWind, AOA);
-        Vector3 lift = getLift(apparentWind, AOA);
+        CalculateKiteForces();
 
-        Vector3 totalForce = DWE + CE + lift; //sum of forces
+        //gameObject.GetComponent<Rigidbody>().AddForce(totalForce);
 
-        gameObject.GetComponent<Rigidbody>().AddForce(totalForce);
+        //find location to move kite to, vector from harness to kite.position + totalForce and reduce magnitude to 25 meters
+        Vector3 wantedPosition = this.transform.position + (totalForce * kiteEffectCoef);
+        Vector3 harnassToWantedPosition = wantedPosition - harnessTransform.position;
+        Vector3 newPosition = harnassToWantedPosition.normalized* lineLength;
 
-       
+        //now move the kite to the position
+        this.transform.position = newPosition;
+
+        RotateKiteTowardsHarness(harnessTransform.position);
+    }
+
+    private void RotateKiteTowardsHarness(Vector3 harnessPosition)
+    {
+        //get angle between kiteforward and harness
+        Vector3 kiteToHarness = harnessPosition - this.transform.position;
+        float angleKiteHarness = Vector3.Angle(this.transform.forward, kiteToHarness);
+        Debug.Log("kite-harness angle: " + angleKiteHarness.ToString());
+
+        //rotate kite around x-axis to have 90 degree angle to harness
+        //Quaternion rotationToHarness = Quaternion.AngleAxis(angleKiteHarness - 90, Vector3.right);
+        this.transform.Rotate(new Vector3(angleKiteHarness - 90, 0, 0));
     }
 }
