@@ -14,6 +14,8 @@ public class SimpleKiteEffects : MonoBehaviour
     public float fwdPushforce;
     public float dwBase = 1;
 
+    public float apparentWindScaler;
+
     public Transform LE_left;
     public Transform LE_right;
     public Transform LE;
@@ -35,52 +37,57 @@ public class SimpleKiteEffects : MonoBehaviour
     {
         Debug.Log("Coanda Effect debug. AOA : " + AOA.ToString());
 
-        float outerWind = (apparentWind.magnitude * (90 - AOA) / 90);
-        float totalOuterWind = outerWind;
-        //float totalOuterWind = outerWind;
-        Debug.Log("outerWind : " + outerWind.ToString());
-
-        //get projection of leading edge normal on wind orthogonal plane
-        Vector3 liftDirection = Vector3.ProjectOnPlane(LE.right, apparentWind).normalized;
+        Vector3 liftDirection = Vector3.ProjectOnPlane(this.transform.up, apparentWind).normalized;
         
         float projectedSurfaceArea_X = Vector3.ProjectOnPlane(this.transform.right, apparentWind).magnitude;
         float projectedSurfaceArea_y = Vector3.ProjectOnPlane(this.transform.forward, apparentWind).magnitude;
         float projectedSurfaceArea = projectedSurfaceArea_X * projectedSurfaceArea_y;
 
-        Vector3 coandaEffect = liftDirection * Mathf.Pow(totalOuterWind, 2);// * 2 * Mathf.PI * Mathf.Deg2Rad * AOA * projectedSurfaceArea;
-        return coandaEffect;
+        float ceAngleMult = Mathf.Deg2Rad * AOA;
+        Debug.Log("ce angle mult: " + ceAngleMult.ToString());
+
+        Vector3 coandaEffect = liftDirection * Mathf.Pow(apparentWind.magnitude, 2) * 2 * Mathf.PI * ceAngleMult * projectedSurfaceArea * 0.5f;
+        return coandaEffect * liftCoef;
     }
 
     Vector3 DownWindEffect(Vector3 apparentWind, float AOA)
     {
-        //float angleMultiplier = AOA / 90;
-        //Vector3 friction = Mathf.Pow(apparentWind.magnitude, 2) * apparentWind.normalized * dwBase;
-        //return Mathf.Pow(apparentWind.magnitude, 2) * apparentWind.normalized * angleMultiplier * dwCoef + friction;
         float projectedSurfaceArea_X = Vector3.ProjectOnPlane(this.transform.right, apparentWind).magnitude;
         float projectedSurfaceArea_y = Vector3.ProjectOnPlane(this.transform.forward, apparentWind).magnitude;
         float projectedSurfaceArea = projectedSurfaceArea_X * projectedSurfaceArea_y;
 
-        Vector3 effect = apparentWind.normalized * 1.28f * Mathf.Sin(Mathf.Deg2Rad * AOA) * projectedSurfaceArea;
-        return effect;
+        Debug.Log("projected surface area: " + projectedSurfaceArea);
+
+        float dweAngleMult = Mathf.Sin(Mathf.Deg2Rad * AOA);
+        Debug.Log("dwe angle mult: " + dweAngleMult.ToString());
+        Vector3 effect = apparentWind.normalized * Mathf.Pow(apparentWind.magnitude, 2) * 1.28f * dweAngleMult * projectedSurfaceArea * 0.5f;
+        return effect * dwCoef + effect.normalized * dwBase;
     }
 
     Vector3 GetLeadingEdgeForwardPush(Vector3 apparentWind, float AOA)
-    {        
-        float angleMultiplier = Mathf.Min(AOA + 45, 90)  / 90;        
-        return this.transform.forward * fwdPushforce * angleMultiplier;
+    {
+        if(AOA > -5 && AOA < 275)
+        {
+            Vector3 liftDirection = Vector3.ProjectOnPlane(this.transform.forward, apparentWind).normalized;
+            return liftDirection * fwdPushforce * Mathf.Pow(apparentWind.magnitude, 2) * (Mathf.Min(AOA,45))/45;
+        } else
+        {
+            Debug.Log("No leading edge fwd push at this AOA");
+            return Vector3.zero;
+        }
+        
     }
 
-    Vector3 getApparentWind(Vector3 windVector, Vector3 kiteMoveDelta)
+    Vector3 getApparentWind(Vector3 windVector, Vector3 kiteMove)
     {
-        return windVector;// + kiteMoveDelta/Time.fixedDeltaTime;
+        return windVector - kiteMove * apparentWindScaler;
     }
 
     float getAOA(Vector3 apparentWind, Transform kiteTransform)
     {
-        Vector3 locationOnPlane = Vector3.ProjectOnPlane(apparentWind, -kiteTransform.up);
-        //Gizmos.DrawSphere(locationOnPlane, 0.2f);
+        //Vector3 locationOnPlane = Vector3.ProjectOnPlane(apparentWind, -kiteTransform.up);        
 
-        float AOA = Vector3.Angle(apparentWind, locationOnPlane);
+        float AOA = Vector3.Angle(apparentWind, kiteTransform.forward);
         if (AOA > 90 || AOA < 0)
         {
             Debug.Log("Angle of attack out of bounds!!! AOA : " + AOA.ToString());
@@ -92,7 +99,7 @@ public class SimpleKiteEffects : MonoBehaviour
 
     private void CalculateKiteForces()
     {
-        apparentWind = getApparentWind(theWind.getWindVector(), previousMove);
+        apparentWind = getApparentWind(theWind.getWindVector(), previousMove/Time.fixedDeltaTime);
         AOA = getAOA(apparentWind, this.transform);
         CE = CoandaEffect(apparentWind, AOA, this.transform);
         DWE = DownWindEffect(apparentWind, AOA);
@@ -100,11 +107,6 @@ public class SimpleKiteEffects : MonoBehaviour
 
         Vector3 tempForce = DWE + CE + fwdPush;
         totalForce = tempForce * ForceScale;
-    }
-
-    private void Update()
-    {
-        
     }
 
 
@@ -119,36 +121,46 @@ public class SimpleKiteEffects : MonoBehaviour
 
         //now move the kite to the position
         Vector3 moveTowards = newPosition - this.transform.position;
-        Vector3 previousMove = moveTowards * Time.fixedDeltaTime;
-        this.transform.position = this.transform.position + previousMove;
-
-        RotateKiteTowardsHarness(harnessTransform.position);
+        previousMove = moveTowards * Time.fixedDeltaTime;
+        this.transform.position = this.transform.position + previousMove;        
 
 
         float addRotation = 0;
         if (Input.GetKey("left"))
         {
             //add angular rotation
-            addRotation += 10;
+            addRotation += 2;
         }
         if (Input.GetKey("right"))
         {
             //add angular rotation
-            addRotation -= 10;
+            addRotation -= 2;
         }
-        this.transform.Rotate(new Vector3(0, addRotation, 0));// Quaternion.AngleAxis(addRotation, this.transform.up);
+        //this.transform.Rotate(new Vector3(0, addRotation, 0));// Quaternion.AngleAxis(addRotation, this.transform.up);
+        this.transform.RotateAround(this.transform.position, this.transform.up, addRotation);
 
+
+        RotateKiteTowardsHarness(harnessTransform.position);
     }
 
+    /// <summary>
+    /// with base angle beign 5 degrees (and when bar fully pulled in, 20 degrees)
+    /// </summary>
+    /// <param name="harnessPosition"></param>
     private void RotateKiteTowardsHarness(Vector3 harnessPosition)
     {
         //get angle between kiteforward and harness
         Vector3 kiteToHarness = harnessPosition - this.transform.position;
-        float angleKiteHarness = Vector3.Angle(this.transform.forward, kiteToHarness);
+        float angleKiteHarness = Vector3.Angle(this.transform.forward, kiteToHarness);        
         Debug.Log("kite-harness angle: " + angleKiteHarness.ToString());
 
         //rotate kite around x-axis to have 90 degree angle to harness
-        this.transform.Rotate(new Vector3(angleKiteHarness - 90, 0, 0));
+        //this.transform.Rotate(new Vector3(angleKiteHarness - 90 + 20, 0, 0));
+        this.transform.RotateAround(this.transform.position, this.transform.right, angleKiteHarness - 90 - 10);
+
+        float sideAngleKiteHarness = Vector3.Angle(this.transform.right, kiteToHarness);
+        this.transform.RotateAround(this.transform.position, this.transform.forward, -sideAngleKiteHarness + 90);
+        
     }
 
 
@@ -162,5 +174,7 @@ public class SimpleKiteEffects : MonoBehaviour
         DrawArrow.ForGizmo(this.transform.position, DWE, Color.blue);
         DrawArrow.ForGizmo(this.transform.position, fwdPush, Color.grey);
         DrawArrow.ForGizmo(this.transform.position, totalForce, Color.magenta);
+
+        DrawArrow.ForGizmo(Vector3.zero, apparentWind, Color.magenta);
     }
 }
