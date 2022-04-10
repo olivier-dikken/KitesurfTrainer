@@ -235,6 +235,19 @@ MonoBehaviour:
   rotationBasePower: 30
   rotationSpeedScalar: 3
   rotationAlpha: 10
+--- !u!114 &538634047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538634037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114b4df4a04f00d98b524470703952b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  filename: Assets/LevelData/<name>
 --- !u!1 &611976346 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1332576817485652488, guid: cd73af965420b5f43a390bb383ee6dfc, type: 3}
