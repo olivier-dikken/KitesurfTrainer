@@ -1,42 +1,27 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using UnityEngine;
 
 public class KiteRecorder : MonoBehaviour
 {
     public string filename = "Assets/LevelData/<name>";
+    public KitePath KitePath;
 
-    private List<Vector3> _points;
     private bool _isRecording;
 
     void Start()
     {
-        _points = new List<Vector3>();
+        KitePath = new KitePath();
         _isRecording = false;
     }
 
     private void StartRecording()
     {
-        _points = new List<Vector3>();
+        KitePath.Clear();
         _isRecording = true;
     }
 
     private void StopRecording()
     {
         _isRecording = false;
-    }
-
-    private void SaveRecording()
-    {
-        var text = new StringBuilder();
-        foreach (var point in _points)
-        {
-            text.Append($"{point.x}, {point.y}, {point.z}\n");
-        }
-
-        var sr = new StreamWriter(filename);
-        sr.Write(text);
     }
 
     public void ToggleRecording()
@@ -50,7 +35,7 @@ public class KiteRecorder : MonoBehaviour
         {
             Debug.Log("Finished Recording");
             StopRecording();
-            SaveRecording();
+            KitePath.SaveToFile(filename);
         }
     }
 
@@ -59,7 +44,7 @@ public class KiteRecorder : MonoBehaviour
         // if recording save to points
         if (_isRecording)
         {
-            _points.Add(transform.position);
+            KitePath.AddFrame(transform.position, transform.up, Time.time);
         }
     }
 }

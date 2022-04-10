@@ -8,43 +8,23 @@ using UnityEngine;
 public class Path : MonoBehaviour
 {
     public string levelFile;
-    private List<Vector3> _points;
+    private KitePath _kitePath;
     private LineRenderer _lr;
 
-    void Awake()
+    public void Load()
     {
         _lr = GetComponent<LineRenderer>();
-        _points = new List<Vector3>();
-        Debug.Log(levelFile);
-        ReadFromFile(levelFile); 
-    }
-
-    public void ReadFromFile(string file)
-    {
-        var sr = new StreamReader(file, true);
-
-        _points = new List<Vector3>();
-
-        string line;
-        while ((line = sr.ReadLine()) != null)
-        {
-            var coords = line.Split(',');
-            float x = float.Parse(coords[0]);
-            float y = float.Parse(coords[1]);
-            float z = float.Parse(coords[2]);
-
-            _points.Add(new Vector3(x, y, z));
-        }
-        
+        _kitePath = new KitePath();
+        _kitePath.ReadFromFile(levelFile);
         UpdateLineRenderer();
     }
-
+    
     private void UpdateLineRenderer()
     {
-        _lr.positionCount = _points.Count;
-        for (int i = 0; i < _points.Count; i++)
+        _lr.positionCount = _kitePath.GetPositions().Count;
+        for (int i = 0; i < _kitePath.GetPositions().Count; i++)
         {
-            _lr.SetPosition(i, _points[i]);
+            _lr.SetPosition(i, _kitePath.GetPositions()[i]);
         }
         
     }
