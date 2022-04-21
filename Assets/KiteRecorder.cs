@@ -1,50 +1,17 @@
+using System;
 using UnityEngine;
 
 public class KiteRecorder : MonoBehaviour
 {
-    public string filename = "Assets/LevelData/<name>";
-    public KitePath KitePath;
+    public KitePath Path;
 
-    private bool _isRecording;
-
-    void Start()
+    void Awake()
     {
-        KitePath = new KitePath();
-        _isRecording = false;
+        Path = new KitePath();
     }
 
-    private void StartRecording()
+    private void Update()
     {
-        KitePath.Clear();
-        _isRecording = true;
-    }
-
-    private void StopRecording()
-    {
-        _isRecording = false;
-    }
-
-    public void ToggleRecording()
-    {
-        if (!_isRecording)
-        {
-            Debug.Log("Started Recording");
-            StartRecording();
-        }
-        else
-        {
-            Debug.Log("Finished Recording");
-            StopRecording();
-            KitePath.SaveToFile(filename);
-        }
-    }
-
-    void FixedUpdate()
-    {
-        // if recording save to points
-        if (_isRecording)
-        {
-            KitePath.AddFrame(transform.position, transform.up, Time.time);
-        }
+        Path.AddFrame(transform.position, transform.up, Time.time);
     }
 }
