@@ -6,15 +6,24 @@ using UnityEngine;
 
 public class KitePath
 {
+    
+    
     private List<Vector3> _positions;
     private List<Vector3> _directions;
     private List<Double> _times;
-    private int _currentFrame;
+    
+    private List<Checkpoint> _checkpoints;
 
     public KitePath()
     {
         Clear();
     }
+
+    public void AddCheckPoint(Checkpoint point)
+    {
+        _checkpoints.Add(point);
+    }
+   
 
     public void AddFrame(Vector3 pos, Vector3 dir, Double time)
     {
@@ -73,19 +82,10 @@ public class KitePath
         return _positions;
     }
 
-    public Tuple<Vector3, Vector3, double> GetFrame()
-    {
-        var res = new Tuple<Vector3, Vector3, double>(_positions[_currentFrame], _directions[_currentFrame],
-            _times[_currentFrame]);
-        _currentFrame++;
-        return res;
-    }
-
     public void Clear()
     {
         _positions = new List<Vector3>();
         _directions = new List<Vector3>();
         _times = new List<Double>();
-        _currentFrame = 0;
     }
 }

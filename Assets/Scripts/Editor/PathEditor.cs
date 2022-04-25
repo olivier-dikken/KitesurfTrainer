@@ -9,10 +9,26 @@ public class PathEditor : Editor
         Path path = (Path) target;
 
         DrawDefaultInspector();
-
+    
+        // Load path from File
         if (GUILayout.Button("Load"))
         {
             path.Load();
         }
+        
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Add Checkpoint"))
+        {
+            path.AddCheckpoint();
+        }
+        
+        GUILayout.EndHorizontal();
+        
+        
+        
+        
     }
+    
+    
 }
