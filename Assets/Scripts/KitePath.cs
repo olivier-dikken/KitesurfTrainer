@@ -11,19 +11,11 @@ public class KitePath
     private List<Vector3> _positions;
     private List<Vector3> _directions;
     private List<Double> _times;
-    
-    private List<Checkpoint> _checkpoints;
 
     public KitePath()
     {
         Clear();
     }
-
-    public void AddCheckPoint(Checkpoint point)
-    {
-        _checkpoints.Add(point);
-    }
-   
 
     public void AddFrame(Vector3 pos, Vector3 dir, Double time)
     {
@@ -78,6 +70,11 @@ public class KitePath
     }
 
     public List<Vector3> GetPositions()
+    {
+        return _positions;
+    }
+    
+    public List<Vector3> GetDirs()
     {
         return _positions;
     }

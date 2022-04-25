@@ -18,17 +18,20 @@ public class PathEditor : Editor
         
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Add Checkpoint"))
+        if (GUILayout.Button("Clear Checkpoints"))
         {
-            path.AddCheckpoint();
+            path.ClearCheckpoints();
+        }
+
+        if (GUILayout.Button("Load Checkpoints uniformly"))
+        {
+            path.PlaceCheckpointsUniformly();
         }
         
         GUILayout.EndHorizontal();
         
         
         
-        
     }
-    
     
 }

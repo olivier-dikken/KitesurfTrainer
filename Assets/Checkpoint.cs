@@ -10,5 +10,6 @@ public class Checkpoint : MonoBehaviour
     public void SetDisplacement()
     {
         transform.position.Set(0, 0, 0);
+        
     }
 }
