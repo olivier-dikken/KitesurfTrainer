@@ -23,6 +23,23 @@ public class Harness : MonoBehaviour
     public LineRenderer lr_center_left;
     public LineRenderer lr_center_right;
 
+    float angle = 0f;
+    float power = 0f;
+    float maxAngle = 70f;
+
+    Vector3 debugArrowStart = Vector3.zero;
+    Vector3 debugArrowDirection = Vector3.up;    
+
+    public float getAngle()
+    {
+        return angle/maxAngle;
+    }
+
+    public float getPower()
+    {
+        return power;
+    }
+
     private void Update()
     {
         drawKiteLine(barRightTip.transform.position, rightBridle.transform.position, lr_right);
@@ -30,7 +47,13 @@ public class Harness : MonoBehaviour
         drawKiteLine(this.transform.position, centerLeftBridle.transform.position, lr_center_left);
         drawKiteLine(this.transform.position, centerRightBridle.transform.position, lr_center_right);
 
-        setBarPosition(0.1f, 0f);
+        
+    }
+
+    private void FixedUpdate()
+    {
+        handleInput();        
+        setBarPosition(power, angle);
     }
 
 
@@ -51,7 +74,7 @@ public class Harness : MonoBehaviour
         Vector3 centerBridles = (centerLeftBridle.transform.position + centerRightBridle.transform.position) / 2;
         Vector3 barLine = (centerBridles - this.transform.position).normalized * 2;
 
-        Vector3 newBarPositionOnLine = (1 - power) * barLine;
+        Vector3 newBarPositionOnLine = (0.1f + 1 - power) * barLine;
         bar.transform.position = this.transform.position + newBarPositionOnLine;
 
         //bar.transform.LookAt(centerBridles);
@@ -61,14 +84,68 @@ public class Harness : MonoBehaviour
         //Vector3 planeNormal = Quaternion.Euler(0, 90, 0) * new Vector3((centerBridles - (this.transform.position + Vector3.up)).x, 0, (centerBridles - (this.transform.position + Vector3.up)).z);
         //Plane plane = new Plane(planeNormal, this.transform.position);
 
-        Vector3 personHead = Vector3.up - (theWind.transform.forward.normalized * 1);
+        Vector3 personHead = this.transform.position + 2*Vector3.up - (theWind.transform.forward.normalized * 0.6f);
 
+        //plane going through bar center, perpendicular to the center lines
         Plane plane = new Plane((bar.transform.position - this.transform.position), bar.transform.position);
-        Ray ray = new Ray(this.transform.position, personHead);
+
+        Ray ray = new Ray(this.transform.position, personHead-this.transform.position);
+
         float distanceAlongRay;
         plane.Raycast(ray, out distanceAlongRay);
+        
+        
+        if(Vector3.Dot(ray.GetPoint(distanceAlongRay), Vector3.up) < 0)
+        {
+            bar.transform.LookAt(-1 * ray.GetPoint(distanceAlongRay));
+        } else
+        {
+            bar.transform.LookAt(ray.GetPoint(distanceAlongRay));
+        }
+                
+        bar.transform.Rotate(new Vector3(0, 0, angle));
+    }
 
-        bar.transform.LookAt(this.transform.position + personHead * distanceAlongRay);
-        bar.transform.Rotate(new Vector3(angle, 0, 0));
+    private void OnDrawGizmos()
+    {
+        //DrawArrow.ForGizmo(debugArrowStart, debugArrowDirection, Color.yellow);
+    }
+
+    private void handleInput()
+    {
+        float addAngle = 3f;
+        float addPower = 0.03f;
+        if (Input.GetKey("left"))
+        {
+            //rm angle
+            if(Mathf.Abs(angle) <= maxAngle)
+            {
+                angle = Mathf.Max(angle - addAngle, -maxAngle);
+            }
+        }
+        if (Input.GetKey("right"))
+        {
+            //add angle
+            if (Mathf.Abs(angle) <= maxAngle)
+            {
+                angle = Mathf.Min(angle + addAngle, maxAngle);
+            }
+        }
+        if (Input.GetKey("up"))
+        {
+            //depower
+            if(power >= 0f)
+            {
+                power = Mathf.Max(power - addPower, 0f);
+            }
+        }
+        if (Input.GetKey("down"))
+        {
+            //more power
+            if(power < 1f)
+            {
+                power = Mathf.Min(power + addPower, 1f);
+            }
+        }
     }
 }
