@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
+    public int score = 0;
     public GameState state;
 
     public static event Action<GameState> onGameStateChanged;
@@ -34,7 +35,12 @@ public class GameManager : MonoBehaviour
         // trigger state changed event to subscribed scripts
         onGameStateChanged?.Invoke(newState);
     }
-        
+
+    public void IncrementScore()
+    {
+        score += 1;
+    }
+    
     void Start()
     {
         UpdateGameState(GameState.Starting);    

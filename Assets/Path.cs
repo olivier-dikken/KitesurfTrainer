@@ -23,14 +23,17 @@ public class Path : MonoBehaviour
     {
         foreach (var c in checkpoints)
         {
-            Destroy(c.gameObject);
+            DestroyImmediate(c.gameObject);
         }
     }
 
     public void PlaceCheckpointsUniformly()
     {
         int numPositions = _kitePath.GetPositions().Count;
-        for (int i = 0; i < numPositions; i += numPositions / numCheckpoints)
+
+        int step = numPositions / numCheckpoints;
+        Debug.Log(step);
+        for (int i = 0; i < numPositions; i += step)
         {
             var checkpointObj = Instantiate(checkpointPrefab, _kitePath.GetPositions()[i], Quaternion.identity);
             var checkpoint = checkpointObj.GetComponent<Checkpoint>();

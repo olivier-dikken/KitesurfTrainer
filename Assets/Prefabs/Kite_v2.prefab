@@ -83,3 +83,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba157b9a7310be48a254a82cc504ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ForceScale: 0
+  lineLength: 25
+  kiteBaseAngle: 10
+  correctedLiftFwdAngle: 20
+  dragCoef: 1
+  liftCoandaEffectCoef: 1
+  liftRedirectAirCoef: 1
+  liftLeadingEdgeCoandaEffectCoef: 1
+  theWind: {fileID: 0}
+  apparentWindScaler: 1
+  LE_left: {fileID: 0}
+  LE_right: {fileID: 0}
+  LE: {fileID: 0}
+  harnessTransform: {fileID: 0}
+--- !u!65 &4423137516814941718
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332576818815897457}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.097954, y: 1.0000001, z: 5.3036375}
+  m_Center: {x: -0.04715872, y: 0.0000004768055, z: 0.105438955}
