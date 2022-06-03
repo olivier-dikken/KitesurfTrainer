@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance;
-    public int score = 0;
     public GameState state;
 
     public static event Action<GameState> onGameStateChanged;
@@ -21,7 +17,7 @@ public class GameManager : MonoBehaviour
     {
         // update the state
         state = newState;
-    
+
         switch (newState)
         {
             case GameState.ShowingPath:
@@ -31,25 +27,14 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 break;
         }
-        
+
         // trigger state changed event to subscribed scripts
         onGameStateChanged?.Invoke(newState);
     }
 
-    public void IncrementScore()
-    {
-        score += 1;
-    }
-    
     void Start()
     {
-        UpdateGameState(GameState.Starting);    
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        UpdateGameState(GameState.Starting);
     }
 }
 
