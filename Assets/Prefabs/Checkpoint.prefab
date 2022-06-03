@@ -94,11 +94,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3658772140496790680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df0d3e312a0b8971a81c18f768f586d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e03add180c17ba4381bef7b768b8abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentPath: {fileID: 0}
-  discoveredColor: {r: 0.3497673, g: 0.8490566, b: 0.16420433, a: 0.64705884}
+  discoveredColor: {r: 0.23113209, g: 1, b: 0.3310674, a: 0.56078434}
 --- !u!65 &6819352091778111158
 BoxCollider:
   m_ObjectHideFlags: 0
