@@ -1,22 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class kiteFakeMovement : MonoBehaviour
 {
+
+    public TextMeshProUGUI DebugUIText;
     //needed variables
 
     public float lineLength = 25;
     public float kiteBaseAngle = 10;
 
-    public float speed = 10;
+    public float speed = 2;
     
     public Wind theWind;
-    public float apparentWindScaler = 1;
+    public float apparentWindScaler = 0.3f;
     
     public Transform LE;
 
     public Transform harnessTransform;
+
+    public Harness theHarness;
 
 
     //shared values / force computation results
@@ -25,10 +30,14 @@ public class kiteFakeMovement : MonoBehaviour
     Vector3 previousMove = Vector3.zero;
 
     float previousAngularRotation = 0f;
-    public float maxRotationPower = 100;
-    public float rotationBasePower = 20;
-    public float rotationSpeedScalar = 3;
-    public float rotationAlpha = 0.3f;
+    float maxRotationPower = 340;
+    float rotationBasePower = 40;
+    float rotationSpeedScaler = 8;
+    float rotationAlphaScaler = 3f;
+
+    // float momentumScalar = 5f;
+
+    // float barPowerDirectionChangeScaler = 50f;
 
     private void FixedUpdate()
     {
@@ -40,10 +49,13 @@ public class kiteFakeMovement : MonoBehaviour
         // - kite_movement dimmed by friction/drag (not exceed AW speed?)
         // - kite_movement depends on previous_movement
 
+        float barPower = theHarness.getPower();
+        float totalForceBarPower = (1f + 3f * barPower) / 4f;
+
         apparentWind = getApparentWind(theWind.getWindVector(), previousMove);
 
         Vector3 harnessToKiteDirection = -1*(harnessTransform.position - this.transform.position).normalized;
-        Vector3 moveTowards = speed * (this.transform.forward * (1 + previousMove.magnitude* 0.99f) + harnessToKiteDirection * 10);
+        Vector3 moveTowards = totalForceBarPower * speed * apparentWind.magnitude * (this.transform.forward * (1 + previousMove.magnitude) + harnessToKiteDirection * 10);
         //if move towards wind, project on plant of AW so can't move straight into wind
         if(Vector3.Dot(apparentWind, moveTowards) < 0)
         {
@@ -52,7 +64,7 @@ public class kiteFakeMovement : MonoBehaviour
         MoveKite(moveTowards);
 
         //steer depending on input controls
-        SteerKite();
+        SteerKite(moveTowards);
     }
 
     Vector3 getApparentWind(Vector3 windVector, Vector3 kiteMove)
@@ -63,6 +75,7 @@ public class kiteFakeMovement : MonoBehaviour
 
     private void MoveKite(Vector3 totalForceOnKite)
     {
+        DebugUIText.text = "totalForceOnKite: " + Mathf.RoundToInt(totalForceOnKite.magnitude).ToString();
         //find location to move kite to, vector from harness to kite.position + totalForce and reduce magnitude to 25 meters
         Vector3 wantedPosition = this.transform.position + totalForceOnKite;
         Vector3 harnassToWantedPosition = wantedPosition - harnessTransform.position;
@@ -82,26 +95,21 @@ public class kiteFakeMovement : MonoBehaviour
         this.transform.position = this.transform.position + (previousMove * Time.fixedDeltaTime);
     }
 
-    private void SteerKite()
+    private void SteerKite(Vector3 totalForceOnKite)
     {
+        float barAngle = theHarness.getAngle();
+
         //rotation speed scales with kite speed and a bit with previous rotation        
-        float speed = previousMove.magnitude + rotationAlpha * Mathf.Abs(previousAngularRotation);        
-        float rotationPower = Mathf.Min(rotationBasePower + rotationSpeedScalar*speed, maxRotationPower);
+        //float steeringSpeed = rotationSpeedScaler * previousMove.magnitude + rotationAlphaScaler * Mathf.Abs(previousAngularRotation);        
+        float steeringSpeed = rotationSpeedScaler * totalForceOnKite.magnitude/10 + rotationAlphaScaler * Mathf.Abs(previousAngularRotation);
+        float rotationPower = Mathf.Min(rotationBasePower + steeringSpeed, maxRotationPower);
         float addRotation = 0;
-        
-        if (Input.GetKey("left"))
-        {
-            //add angular rotation
-            addRotation += rotationPower * Time.fixedDeltaTime;
-        }
-        if (Input.GetKey("right"))
-        {
-            //add angular rotation
-            addRotation -= rotationPower * Time.fixedDeltaTime;
-        }
+
+        addRotation = - barAngle * rotationPower * Time.fixedDeltaTime;
+
 
         previousAngularRotation = addRotation;
-        //this.transform.Rotate(new Vector3(0, addRotation, 0));// Quaternion.AngleAxis(addRotation, this.transform.up);
+        
         this.transform.RotateAround(this.transform.position, this.transform.up, addRotation);
 
         RotateKiteTowardsHarness(harnessTransform.position);
@@ -127,7 +135,7 @@ public class kiteFakeMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {                
-        // DrawArrow.ForGizmo(Vector3.zero, apparentWind, Color.yellow);
-        // DrawArrow.ForGizmo(Vector3.zero, previousMove, Color.magenta);
+        DrawArrow.ForGizmo(Vector3.zero, apparentWind, Color.yellow);
+        DrawArrow.ForGizmo(Vector3.zero, previousMove, Color.magenta);        
     }
 }
