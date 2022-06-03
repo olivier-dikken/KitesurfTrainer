@@ -1,97 +1,83 @@
-using System;
 using UnityEngine;
 
 public class Kite : MonoBehaviour
 {
 
-    public Vector3 wind;
+    [SerializeField] public KiteEquations myKiteEq;
+    [SerializeField] public double surfaceArea;
+    [SerializeField] public double airDensity;
+    [SerializeField] private double windVelocity;
+    [SerializeField] public Vector3 wind;
 
-    public Line leftLine;
-    public Line rightLine;
-    
-    // parameters
-    [SerializeField] private float dragScale = 1;
-    [SerializeField] private float liftScale = 1;
-    [SerializeField] private float dragTorqueScale = 1;
-    [SerializeField] private float liftTorqueScale = 1;
+    [SerializeField] private double tensionLeft;
+    [SerializeField] private double tensionRight;
 
-    // recomputed at each iteration
-    public Vector3 totalWindForce;
-    private Vector3 _liftForce;
-    private Vector3 _dragForce;
-    private Vector3 _liftTorque;
-    private Vector3 _dragTorque;
-    private float _liftMagnitude;
-    private float _dragMagnitude;
-    private float _angleOfAttack;
-    
-    // components
-    private Rigidbody _rb;
+    [SerializeField] private Vector3 lineOrigin = Vector3.zero;
 
-    private void Start()
-    {
-        _rb = gameObject.GetComponent<Rigidbody>();
-    }
+    [SerializeField] float kite_width;
+    [SerializeField] float kite_height;
 
+    public GameObject leftPoint;
+    public GameObject rightPoint;
 
-    private void UpdatePhysics()
-    {
-        // angle of attack is angle between wind and kite direction
-        _angleOfAttack = Mathf.Deg2Rad * Vector3.Angle(wind, transform.up);
-        _angleOfAttack = _angleOfAttack == 0 ? 0.001f : _angleOfAttack;
-        
-        // compute lift and drag magnitudes
-        _liftMagnitude = (wind.magnitude * wind.magnitude / _angleOfAttack) * liftScale;
-        _liftMagnitude = _liftMagnitude < 0 ? 0 : _liftMagnitude;
-        
-        _dragMagnitude = Mathf.Sin(_angleOfAttack) * dragScale;
-
-        // get vector forms of drag and lift
-        _dragForce = wind.normalized * _dragMagnitude;
-        _liftForce = transform.up * _liftMagnitude;
-
-        float liftRelAngle = Mathf.Deg2Rad * Vector3.Angle(transform.up, Vector3.up);
-        float dragRelAngle = Mathf.Deg2Rad * Vector3.Angle(transform.up, wind.normalized);
-        Debug.Log(dragRelAngle);
-        
-        _liftTorque = -Vector3.Cross(Vector3.up, transform.up) * liftRelAngle * liftTorqueScale * _liftMagnitude;
-        _dragTorque = -Vector3.Cross(wind, transform.up).normalized * dragRelAngle * Vector3.Angle(transform.up, wind) * dragTorqueScale * _dragMagnitude;
-            
-        // total wind force, sum of lift and drag
-        totalWindForce = _dragForce + _liftForce;
-    }
+    Vector3 kite_width_direction;
 
     private void OnDrawGizmos()
     {
-        
-        // wind
-        DrawArrow.ForGizmo(transform.position, wind, Color.blue, 2.0f);
-        
-        // direction
-        // DrawArrow.ForGizmo(transform.position, transform.up, Color.red);
-        
-        // draw forces
-        DrawArrow.ForGizmo(transform.position, totalWindForce, Color.cyan);
-        // DrawArrow.ForGizmo(transform.position, _dragForce, Color.magenta);
-       
-        // draw torque-axis
-        // DrawArrow.ForGizmo(transform.position, _liftTorque, Color.cyan);
-        // DrawArrow.ForGizmo(transform.position, _dragTorque, Color.green);
+        // draw line points
+        // lines
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(leftPoint.transform.position, 0.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(rightPoint.transform.position, 0.1f);
 
+        // origin point
+        Gizmos.DrawSphere(lineOrigin, 0.1f);
+
+        // lines
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(lineOrigin, leftPoint.transform.position);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(lineOrigin, rightPoint.transform.position);
+
+        DrawArrow.ForGizmo(this.transform.position, this.transform.forward, Color.cyan);
+        DrawArrow.ForGizmo(this.transform.position, kite_width_direction, Color.magenta);
+
+        //draw wind direction/power
+        DrawArrow.ForGizmo(lineOrigin, wind, Color.white);
+
+        //draw lift
+        DrawArrow.ForGizmo(this.transform.position, new Vector3(0,myKiteEq.lift/10,0), Color.black);
+
+        Gizmos.matrix = this.transform.localToWorldMatrix;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(kite_width, 0.01f, kite_height));
+                    
     }
 
-    public void FixedUpdate()
+    private void Start()
     {
-        // recompute physics
-        UpdatePhysics();
+        InitKite();
+        myKiteEq = new KiteEquations(this);
+    }
 
-        // apply forces
-        _rb.AddForce(totalWindForce);
-        _rb.AddForceAtPosition(leftLine.GetTensionForce(), leftLine.transform.position);
-        _rb.AddForceAtPosition(rightLine.GetTensionForce(), rightLine.transform.position);
+    void InitKite()
+    {
+        //set left and right point positions relative to kite position, kite width and harness position
+        Vector3 harness_direction = lineOrigin - this.transform.position;
+        kite_width_direction = Vector3.Cross(this.transform.forward, harness_direction);        
+    }
 
-        // apply torques
-        _rb.AddTorque(_dragTorque);
-        _rb.AddTorque(_liftTorque);
+    void FixedUpdate()
+    {
+
+        myKiteEq.CustomUpdate();
+        
+    }
+
+    //get width of kite
+    public float getSpan()
+    {
+        return kite_width;
     }
 }
