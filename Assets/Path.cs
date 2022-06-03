@@ -1,13 +1,13 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using UnityEngine;
 
 public class Path : MonoBehaviour
 {
     public string levelFile;
+    public int numCheckpoints;
+    public List<GameObject> checkpoints;
+
+    public GameObject checkpointPrefab;
     private KitePath _kitePath;
     private LineRenderer _lr;
 
@@ -18,7 +18,31 @@ public class Path : MonoBehaviour
         _kitePath.ReadFromFile(levelFile);
         UpdateLineRenderer();
     }
-    
+
+    public void ClearCheckpoints()
+    {
+        foreach (var c in checkpoints)
+        {
+            DestroyImmediate(c.gameObject);
+        }
+    }
+
+    public void PlaceCheckpointsUniformly()
+    {
+        int numPositions = _kitePath.GetPositions().Count;
+
+        int step = numPositions / numCheckpoints;
+        Debug.Log(step);
+        for (int i = 0; i < numPositions; i += step)
+        {
+            var checkpointObj = Instantiate(checkpointPrefab, _kitePath.GetPositions()[i], Quaternion.identity);
+            var checkpoint = checkpointObj.GetComponent<Checkpoint>();
+            checkpoint.transform.up = _kitePath.GetDirs()[i];
+            checkpoint.parentPath = this;
+            checkpoints.Add(checkpointObj);
+        }
+    }
+
     private void UpdateLineRenderer()
     {
         _lr.positionCount = _kitePath.GetPositions().Count;
@@ -26,7 +50,5 @@ public class Path : MonoBehaviour
         {
             _lr.SetPosition(i, _kitePath.GetPositions()[i]);
         }
-        
     }
-    
 }

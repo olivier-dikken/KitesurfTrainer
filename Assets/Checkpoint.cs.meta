@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/VRHandler.cs.meta
-guid: 1abcf2be391900546952ec418df750bb
+<<<<<<<< HEAD:Assets/Scripts/KiteEquations.cs.meta
+guid: 9e03add180c17ba4381bef7b768b8abe
 ========
-guid: e5bdf3d9127d1e9449d59df9c5d98e59
->>>>>>>> main:Assets/Scripts/KiteEquations.cs.meta
+guid: df0d3e312a0b8971a81c18f768f586d9
+>>>>>>>> main:Assets/Checkpoint.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

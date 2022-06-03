@@ -64,8 +64,8 @@ public class Kite : MonoBehaviour
     void InitKite()
     {
         //set left and right point positions relative to kite position, kite width and harness position
-        Vector3 harness_direction = lineOrigin - this.transform.position;
-        kite_width_direction = Vector3.Cross(this.transform.forward, harness_direction);        
+        // Vector3 harness_direction = lineOrigin - this.transform.position;
+        // kite_width_direction = Vector3.Cross(this.transform.forward, harness_direction);        
     }
 
     void FixedUpdate()

@@ -35,9 +35,9 @@ public class kiteFakeMovement : MonoBehaviour
     float rotationSpeedScaler = 8;
     float rotationAlphaScaler = 3f;
 
-    float momentumScalar = 5f;
+    // float momentumScalar = 5f;
 
-    float barPowerDirectionChangeScaler = 50f;
+    // float barPowerDirectionChangeScaler = 50f;
 
     private void FixedUpdate()
     {
