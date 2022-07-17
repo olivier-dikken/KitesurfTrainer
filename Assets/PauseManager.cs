@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
 {
-
+    
+    // TODO replace simple pauseMenu panel with proper VR pause menu
     [SerializeField] private GameObject pauseMenu;
     private bool _isPaused;
     
