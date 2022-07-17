@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
     public Path parentPath;
     private MeshRenderer _renderer;
+    public ScoreManager scoreManager;
 
     [SerializeField] private Color discoveredColor;
 
@@ -21,7 +21,8 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ScoreManager.Instance.score += 1;
+        // Increment Score
+        scoreManager.score += 1;
         _renderer.material.color = discoveredColor;
     }
 }

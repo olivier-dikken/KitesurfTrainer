@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Path : MonoBehaviour
 {
+
+    [SerializeField] private ScoreManager scoreManager;
+    
     public string levelFile;
     public int numCheckpoints;
     public List<GameObject> checkpoints;
@@ -39,6 +42,7 @@ public class Path : MonoBehaviour
             var checkpoint = checkpointObj.GetComponent<Checkpoint>();
             checkpoint.transform.up = _kitePath.GetDirs()[i];
             checkpoint.parentPath = this;
+            checkpoint.scoreManager = scoreManager;
             checkpoints.Add(checkpointObj);
         }
     }

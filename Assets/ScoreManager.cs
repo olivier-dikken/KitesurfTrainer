@@ -5,14 +5,6 @@ public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     public int score;
-   
-    // make singleton
-    public static ScoreManager Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     public void Update()
     {
