@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI scoreText;
     public int score;
    
     // make singleton

@@ -3,44 +3,46 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-    public GameState state;
+    public static GameManager Instance;
+    public GameState currentState;
+    [SerializeField] private GameState InitialState;
 
-    public static event Action<GameState> onGameStateChanged;
+    public static event Action<GameState> OnGameStateChanged;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     public void UpdateGameState(GameState newState)
     {
         // update the state
-        state = newState;
-
-        switch (newState)
-        {
-            case GameState.ShowingPath:
-                break;
-            case GameState.Starting:
-                break;
-            case GameState.Playing:
-                break;
-        }
+        currentState = newState;
+    
+        // handle the state change
+        // switch (newState)
+        // {
+        //     case GameState.Playing:
+        //         break;
+        //     case GameState.Paused:
+        //         break;
+        //     default:
+        //         throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+        // }
 
         // trigger state changed event to subscribed scripts
-        onGameStateChanged?.Invoke(newState);
+        OnGameStateChanged?.Invoke(newState);
     }
 
     void Start()
     {
-        UpdateGameState(GameState.Starting);
+        // set initial state
+        UpdateGameState(InitialState);
     }
 }
 
 public enum GameState
 {
-    ShowingPath,
-    Starting,
-    Playing
+    Playing,
+    Paused
 }
