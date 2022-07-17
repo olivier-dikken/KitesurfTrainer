@@ -147,5 +147,10 @@ public class Harness : MonoBehaviour
                 power = Mathf.Min(power + addPower, 1f);
             }
         }
+
+        if (Input.GetKey("escape"))
+        {
+            GameManager.Instance.UpdateGameState(GameState.Paused);
+        }
     }
 }

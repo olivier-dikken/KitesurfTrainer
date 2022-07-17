@@ -6,7 +6,7 @@ using UnityEngine;
 public class kiteFakeMovement : MonoBehaviour
 {
 
-    public TextMeshProUGUI DebugUIText;
+    // public TextMeshProUGUI DebugUIText;
     //needed variables
 
     public float lineLength = 25;
@@ -75,7 +75,7 @@ public class kiteFakeMovement : MonoBehaviour
 
     private void MoveKite(Vector3 totalForceOnKite)
     {
-        DebugUIText.text = "totalForceOnKite: " + Mathf.RoundToInt(totalForceOnKite.magnitude).ToString();
+        // DebugUIText.text = "totalForceOnKite: " + Mathf.RoundToInt(totalForceOnKite.magnitude).ToString();
         //find location to move kite to, vector from harness to kite.position + totalForce and reduce magnitude to 25 meters
         Vector3 wantedPosition = this.transform.position + totalForceOnKite;
         Vector3 harnassToWantedPosition = wantedPosition - harnessTransform.position;
