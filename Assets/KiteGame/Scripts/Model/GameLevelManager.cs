@@ -29,9 +29,10 @@ public class GameLevelManager : MonoBehaviour
     }
 
 
-    void UpdateCurrentLevel(GameLevel newLevel)
+    public void UpdateCurrentLevel(GameLevel newLevel)
     {
         CurrentLevel = newLevel;
+        //TODO set player starting position
     }
 
 

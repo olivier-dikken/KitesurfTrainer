@@ -7,7 +7,7 @@ public class Profile : MonoBehaviour
     bool isGuest;
     string name;
     private string pw;
-    GameLevel maxLevel;    
+    public GameLevel maxLevel { get; }
 
     //save scores and other progress
 
