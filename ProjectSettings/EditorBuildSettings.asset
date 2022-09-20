@@ -4,5 +4,15 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 1
+    path: Assets/KiteGame/Scenes/MainMenu_VR.unity
+    guid: cf6b276ca1f195f40977e95628b148b0
+  - enabled: 1
+    path: Assets/KiteGame/Scenes/Level_Intro_VR.unity
+    guid: d22195470a1a04b409b50b2ce47d9da0
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: be82c73a13380b5489d82582f4ccb313, type: 2}
+    Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: e7ad71bf36e923c4894bdbbe1dfb9b9c, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: aff0293584f5bee41b2818557e6dd9bc, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 95e17f54276500f4098f85f4e54a182e, type: 2}
