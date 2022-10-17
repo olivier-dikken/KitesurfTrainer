@@ -28,7 +28,9 @@ public class Harness : MonoBehaviour
     float maxAngle = 70f;
 
     Vector3 debugArrowStart = Vector3.zero;
-    Vector3 debugArrowDirection = Vector3.up;    
+    Vector3 debugArrowDirection = Vector3.up;
+
+    public Transform vrcameraTransform;
 
     public float getAngle()
     {
@@ -52,8 +54,14 @@ public class Harness : MonoBehaviour
 
     private void FixedUpdate()
     {
+        positionHarnessOnPlayerWaist();
         handleInput();        
         setBarPosition(power, angle);
+    }
+
+    private void positionHarnessOnPlayerWaist()
+    {
+        gameObject.transform.position = vrcameraTransform.position + new Vector3(0, -0.1f, 0);
     }
 
 
@@ -72,7 +80,7 @@ public class Harness : MonoBehaviour
 
         //get vector from harness to average(centerLeftBridle, centerRightBridle)
         Vector3 centerBridles = (centerLeftBridle.transform.position + centerRightBridle.transform.position) / 2;
-        Vector3 barLine = (centerBridles - this.transform.position).normalized * 2;
+        Vector3 barLine = (centerBridles - this.transform.position).normalized * 1;
 
         Vector3 newBarPositionOnLine = (0.1f + 1 - power) * barLine;
         bar.transform.position = this.transform.position + newBarPositionOnLine;
