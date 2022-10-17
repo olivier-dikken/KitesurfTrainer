@@ -27,7 +27,7 @@ public class Kite : MonoBehaviour
         // draw line points
         // lines
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(leftPoint.transform.position, 0.1f);
+        //Gizmos.DrawSphere(leftPoint.transform.position, 0.1f);
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(rightPoint.transform.position, 0.1f);
 

@@ -317,8 +317,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1446640759057290438}
-  - component: {fileID: 1446640759057290437}
-  - component: {fileID: 1446640759057290439}
   - component: {fileID: 4255874943405925852}
   - component: {fileID: 463241383021845472}
   - component: {fileID: 463241383021845466}
@@ -352,30 +350,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
---- !u!114 &1446640759057290437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446640759057290427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2a7c3df8c7a10244a1cac12226d2d74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1446640759057290439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446640759057290427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89b2fe93f634a744685bc8c017943e79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &4255874943405925852
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -522,9 +496,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1446640759057290427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 114b4df4a04f00d98b524470703952b9, type: 3}
+  m_Script: {fileID: 11500000, guid: af3b1acbe463bd44889f4a8b484d9345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugUIText: {fileID: 0}
+  lineLength: 25
+  kiteBaseAngle: 10
+  speed: 2
+  theWind: {fileID: 0}
+  apparentWindScaler: 0.3
+  LE: {fileID: 0}
+  harnessTransform: {fileID: 0}
+  theHarness: {fileID: 0}
 --- !u!114 &463241383021845458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,18 +517,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1446640759057290427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dbbedc115cc4dd4e8afb7c91eb2de8f, type: 3}
+  m_Script: {fileID: 11500000, guid: b9957c7b0bbc53f4cabb93ce00af73af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugUIText: {fileID: 0}
-  lineLength: 25
-  kiteBaseAngle: 10
-  speed: 6
-  theWind: {fileID: 0}
-  apparentWindScaler: 0.3
-  LE: {fileID: 1446640760880946174}
-  harnessTransform: {fileID: 0}
-  theHarness: {fileID: 0}
 --- !u!1 &1446640759882136002
 GameObject:
   m_ObjectHideFlags: 0

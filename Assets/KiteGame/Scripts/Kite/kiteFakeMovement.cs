@@ -135,7 +135,7 @@ public class kiteFakeMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {                
-        DrawArrow.ForGizmo(Vector3.zero, apparentWind, Color.yellow);
-        DrawArrow.ForGizmo(Vector3.zero, previousMove, Color.magenta);        
+        //DrawArrow.ForGizmo(Vector3.zero, apparentWind, Color.yellow);
+        //DrawArrow.ForGizmo(Vector3.zero, previousMove, Color.magenta);        
     }
 }
