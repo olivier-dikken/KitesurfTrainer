@@ -30,6 +30,9 @@ public class Harness : MonoBehaviour
     Vector3 debugArrowStart = Vector3.zero;
     Vector3 debugArrowDirection = Vector3.up;
 
+    public Transform linearMappingStart;
+    public Transform linearMappingEnd;
+
     public Transform vrcameraTransform;
 
     public float getAngle()
@@ -61,7 +64,7 @@ public class Harness : MonoBehaviour
 
     private void positionHarnessOnPlayerWaist()
     {
-        gameObject.transform.position = vrcameraTransform.position + new Vector3(0, -0.1f, 0);
+        gameObject.transform.position = vrcameraTransform.position + new Vector3(0, -0.15f, 0);
     }
 
 
@@ -81,6 +84,9 @@ public class Harness : MonoBehaviour
         //get vector from harness to average(centerLeftBridle, centerRightBridle)
         Vector3 centerBridles = (centerLeftBridle.transform.position + centerRightBridle.transform.position) / 2;
         Vector3 barLine = (centerBridles - this.transform.position).normalized * 1;
+
+        linearMappingStart.transform.position = this.transform.position + barLine * 0.1f;
+        linearMappingEnd.transform.position = this.transform.position + barLine * 1f;
 
         Vector3 newBarPositionOnLine = (0.1f + 1 - power) * barLine;
         bar.transform.position = this.transform.position + newBarPositionOnLine;

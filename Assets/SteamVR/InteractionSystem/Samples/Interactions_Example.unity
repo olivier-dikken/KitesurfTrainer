@@ -9209,6 +9209,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644274443}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &651185635 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7802521186859074882, guid: fad0a764d0862cb40a60fa51664505e2, type: 3}
+  m_PrefabInstance: {fileID: 1266381743}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &656719801
 GameObject:
   m_ObjectHideFlags: 0
@@ -10946,6 +10951,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4000011633437892, guid: fb710a001890d9a44bb74a8ce4f20cc0, type: 3}
   m_PrefabInstance: {fileID: 759791378}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &761428762 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7802521188336380374, guid: fad0a764d0862cb40a60fa51664505e2, type: 3}
+  m_PrefabInstance: {fileID: 1266381743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f8e9e70f68ee3418ad85992778c116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &769980276
 GameObject:
   m_ObjectHideFlags: 0
@@ -17837,7 +17853,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7802521187200142732, guid: fad0a764d0862cb40a60fa51664505e2, type: 3}
+    - {fileID: 7802521187200142734, guid: fad0a764d0862cb40a60fa51664505e2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fad0a764d0862cb40a60fa51664505e2, type: 3}
 --- !u!1 &1271963282 stripped
 GameObject:
@@ -20548,6 +20566,81 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4000010733554458, guid: e0b086fbb874df143b6ac8f53cea5424, type: 3}
   m_PrefabInstance: {fileID: 1436515058}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1439682125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7802521187200142727, guid: fad0a764d0862cb40a60fa51664505e2, type: 3}
+  m_PrefabInstance: {fileID: 1266381743}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1439682131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439682125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c81a27fd18a29444be92481fe681f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPosition: {fileID: 651185635}
+  endPosition: {fileID: 1671021504}
+  linearMapping: {fileID: 761428762}
+  repositionGameObject: 1
+  maintainMomemntum: 1
+  momemtumDampenRate: 5
+--- !u!114 &1439682132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439682125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b93b6a877adcbf94c89a9d6e0c0e844d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateActionSetOnAttach:
+    actionSetPath: 
+  hideHandOnAttach: 1
+  hideSkeletonOnAttach: 0
+  hideControllerOnAttach: 0
+  handAnimationOnPickup: 0
+  setRangeOfMotionOnPickup: -1
+  useHandObjectAttachmentPoint: 1
+  attachEaseIn: 0
+  snapAttachEaseInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  snapAttachEaseInTime: 0.15
+  snapAttachEaseInCompleted: 0
+  skeletonPoser: {fileID: 0}
+  handFollowTransform: 1
+  highlightOnHover: 1
+  hideHighlight: []
+  hoverPriority: 0
 --- !u!1 &1443051532
 GameObject:
   m_ObjectHideFlags: 0
@@ -23884,6 +23977,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7c27a46b80a6445bffe44ea9e91cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1671021504 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7802521187679954800, guid: fad0a764d0862cb40a60fa51664505e2, type: 3}
+  m_PrefabInstance: {fileID: 1266381743}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1672065159
 GameObject:
   m_ObjectHideFlags: 0
